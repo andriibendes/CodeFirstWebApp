@@ -13,7 +13,6 @@ namespace WebApp.Models
         }
 
         public int Id { get; set; }
-
         public string Name { get; set; }
         public string Strand { get; set; }
         public string Sense { get; set; }

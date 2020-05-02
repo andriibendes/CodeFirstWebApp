@@ -1,20 +1,22 @@
-﻿const uri = 'api/Categories';
-let categories = [];
+﻿const uri = 'api/Virus';
+let viruses = [];
 
-function getCategories() {
+function getViruses() {
     fetch(uri)
         .then(response => response.json())
-        .then(data => _displayCategories(data))
-        .catch(error => console.error('Unable to get categories.', error));
+        .then(data => _displayViruses(data))
+        .catch(error => console.error('Unable to get viruses.', error));
 }
 
 function addCategory() {
     const addNameTextbox = document.getElementById('add-name');
-    const addInfoTextbox = document.getElementById('add-info');
+    const addInfoTextbox = document.getElementById('add-genome');
+    const addInfoTextbox = document.getElementById('add-organism');
 
-    const category = {
+    const virus = {
         name: addNameTextbox.value.trim(),
-        info: addInfoTextbox.value.trim(),
+        genome: addGenomeTextbox.value.trim(),
+        organism: addOrganismTextbox.value.trim(),
     };
 
     fetch(uri, {
@@ -23,52 +25,55 @@ function addCategory() {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(category)
+        body: JSON.stringify(virus)
     })
         .then(response => response.json())
         .then(() => {
-            getCategories();
+            getViruses();
             addNameTextbox.value = '';
-            addInfoTextbox.value = '';
+            addGenomeTextbox.value = '';
+            addOrganismTextbox.value = '';
         })
-        .catch(error => console.error('Unable to add category.', error));
+        .catch(error => console.error('Unable to add virus.', error));
 }
 
-function deleteCategory(id) {
+function deleteVirus(id) {
     fetch(`${uri}/${id}`, {
         method: 'DELETE'
     })
-        .then(() => getCategories())
-        .catch(error => console.error('Unable to delete category.', error));
+        .then(() => getViruses())
+        .catch(error => console.error('Unable to delete virus.', error));
 }
 
 function displayEditForm(id) {
-    const category = categories.find(category => category.id === id);
+    const virus = viruses.find(virus => virus.id === id);
 
-    document.getElementById('edit-id').value = category.id;
-    document.getElementById('edit-name').value = category.name;
-    document.getElementById('edit-info').value = category.info;
+    document.getElementById('edit-id').value = virus.id;
+    document.getElementById('edit-name').value = virus.name;
+    document.getElementById('edit-genome').value = virus.genome;
+    document.getElementById('edit-orgamism').value = virus.organism;
     document.getElementById('editForm').style.display = 'block';
 }
 
-function updateCategory() {
-    const categoryId = document.getElementById('edit-id').value;
-    const category = {
-        id: parseInt(categoryId, 10),
+function updateVirus() {
+    const virusId = document.getElementById('edit-id').value;
+    const virus = {
+        id: parseInt(virusId, 10),
         name: document.getElementById('edit-name').value.trim(),
-        info: document.getElementById('edit-info').value.trim()
+        document.getElementById('edit-genome').value.trim(),
+        document.getElementById('edit-orgamism').value.trim()
     };
 
-    fetch(`${uri}/${categoryId}`, {
+    fetch(`${uri}/${virusId}`, {
         method: 'PUT',
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(category)
+        body: JSON.stringify(virus)
     })
-        .then(() => getCategories())
-        .catch(error => console.error('Unable to update category.', error));
+        .then(() => getViruses())
+        .catch(error => console.error('Unable to update virus.', error));
 
     closeInput();
 
@@ -80,8 +85,8 @@ function closeInput() {
 }
 
 
-function _displayCategories(data) {
-    const tBody = document.getElementById('categories');
+function _displayViruses(data) {
+    const tBody = document.getElementById('viruses');
     tBody.innerHTML = '';
 
 
@@ -90,21 +95,21 @@ function _displayCategories(data) {
     data.forEach(category => {
         let editButton = button.cloneNode(false);
         editButton.innerText = 'Edit';
-        editButton.setAttribute('onclick', `displayEditForm(${category.id})`);
+        editButton.setAttribute('onclick', `displayEditForm(${virus.id})`);
 
         let deleteButton = button.cloneNode(false);
         deleteButton.innerText = 'Delete';
-        deleteButton.setAttribute('onclick', `deleteCategory(${category.id})`);
+        deleteButton.setAttribute('onclick', `deleteCategory(${virus.id})`);
 
         let tr = tBody.insertRow();
 
 
         let td1 = tr.insertCell(0);
-        let textNode = document.createTextNode(category.name);
+        let textNode = document.createTextNode(virus.name);
         td1.appendChild(textNode);
 
         let td2 = tr.insertCell(1);
-        let textNodeInfo = document.createTextNode(category.info);
+        let textNodeInfo = document.createTextNode(virus.info);
         td2.appendChild(textNodeInfo);
 
         let td3 = tr.insertCell(2);
@@ -114,5 +119,5 @@ function _displayCategories(data) {
         td4.appendChild(deleteButton);
     });
 
-    categories = data;
+    viruses = data;
 }

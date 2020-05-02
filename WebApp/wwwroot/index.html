@@ -2,24 +2,26 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Informatics-2020-Lab2 Library</title>
+    <title>Viruses</title>
     <link rel="stylesheet" href="css/site.css" />
 </head>
 <body>
-    <h1>Informatics-2020-Lab2 Library</h1>
-    <h3>Add Category</h3>
-    <form action="javascript:void(0);" method="POST" onsubmit="addCategory()">
-        <input type="text" id="add-name" placeholder="New Category">
-        <input type="text" id="add-info" placeholder="New Info Category">
+    <h1>Viruses</h1>
+    <h3>Add Virus</h3>
+    <form action="javascript:void(0);" method="POST" onsubmit="addVirus()">
+        <input type="text" id="add-name" placeholder="New Virus">
+        <input type="text" id="add-genome" placeholder="New Genome">
+        <input type="text" id="add-organism" placeholder="New Organism">
         <input type="submit" value="Add">
     </form>
 
-    <div id="editCategory">
+    <div id="editVirus">
         <h3>Edit</h3>
-        <form action="javascript:void(0);" onsubmit="updateCategory()">
+        <form action="javascript:void(0);" onsubmit="updateVirus()">
             <input type="hidden" id="edit-id">
             <input type="text" id="edit-name">
-            <input type="text" id="edit-info">
+            <input type="text" id="edit-genome">
+            <input type="text" id="edit-organism">
             <input type="submit" value="Save">
             <a onclick="closeInput()" aria-label="Close">&#10006;</a>
         </form>
@@ -30,14 +32,15 @@
     <table>
         <tr>
             <th>Name</th>
-            <th>Info</th>
+            <th>Genome</th>
+            <th>Organism</th>
         </tr>
-        <tbody id="categories"></tbody>
+        <tbody id="virues"></tbody>
     </table>
 
     <script src="js/webapp.js" asp-append-version="true"></script>
     <script type="text/javascript">
-        getCategories();
+        getViruses();
     </script>
 </body>
 </html>
