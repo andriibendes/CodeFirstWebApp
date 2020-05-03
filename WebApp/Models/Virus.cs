@@ -14,7 +14,6 @@ namespace WebApp.Models
         }
 
         public int Id { get; set; }
-
         public string Name { get; set; }
         public int GenomeId { get; set; }
         public int OrganismId { get; set; }
