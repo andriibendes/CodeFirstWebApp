@@ -1,0 +1,45 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Genomes</title>
+    <link rel="stylesheet" href="css/site.css" />
+</head>
+<body>
+    <h1>Genomes</h1>
+    <h3>Add Genome</h3>
+    <form action="javascript:void(0);" method="POST" onsubmit="addGenome()">
+        <input type="text" id="add-nameGen" placeholder="New Genome">
+        <input type="text" id="add-strand" placeholder="New Strand">
+        <input type="text" id="add-sense" placeholder="New Sense">
+        <input type="submit" value="Add">
+    </form>
+
+    <div id="editGenome">
+        <h3>Edit</h3>
+        <form action="javascript:void(0);" onsubmit="updateGenome()">
+            <input type="hidden" id="edit-idGen">
+            <input type="text" id="edit-nameGen">
+            <input type="text" id="edit-strand">
+            <input type="text" id="edit-sense">
+            <input type="submit" value="Save">
+        </form>
+    </div>
+
+    <p id="counter"></p>
+
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Strand</th>
+            <th>Sense</th>
+        </tr>
+        <tbody id="genomes"></tbody>
+    </table>
+
+    <script src="js/webapp.js" asp-append-version="true"></script>
+    <script type="text/javascript">
+        getGenomes();
+    </script>
+</body>
+</html>

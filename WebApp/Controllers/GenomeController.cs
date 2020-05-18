@@ -11,7 +11,7 @@ namespace WebApp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class GenomeController : ControllerBase
+    public class GenomeController : Controller
     {
         private readonly VirusContext _context;
 

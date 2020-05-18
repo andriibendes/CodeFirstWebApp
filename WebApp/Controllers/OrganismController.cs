@@ -11,7 +11,7 @@ namespace WebApp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class OrganismController : ControllerBase
+    public class OrganismController : Controller
     {
         private readonly VirusContext _context;
 
@@ -19,6 +19,7 @@ namespace WebApp.Controllers
         {
             _context = context;
         }
+
 
         // GET: api/Organism
         [HttpGet]
