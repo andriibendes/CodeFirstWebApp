@@ -3,26 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <title>Viruses</title>
-    <link rel="stylesheet" href="css/site.css" />
+    <link rel="stylesheet" href="css/bootstrap.css"/>
 </head>
 <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <a class="navbar-brand" href="index.html">Viruses</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon">FEWFWEEFt</span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarColor01">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="genomes.html">Genomes</a>
+                </li>
+            </ul>
+
+        </div>
+    </nav>
     <h1>Viruses</h1>
     <h3>Add Virus</h3>
     <form action="javascript:void(0);" method="POST" onsubmit="addVirus()">
-        <input type="text" id="add-name" placeholder="New Virus">
-        <input type="text" id="add-genome" placeholder="New Genome">
-        <input type="text" id="add-organism" placeholder="New Organism">
-        <input type="submit" value="Add">
+        <input type="text" id="add-name" class="form-group" placeholder="New Virus">
+        <input type="text" id="add-genome" class="form-group" placeholder="New Genome">
+        <input type="text" id="add-organism" class="form-group" placeholder="New Organism">
+        <input type="submit" value="Add" class="btn btn-success">
     </form>
 
     <div id="editVirus">
         <h3>Edit</h3>
         <form action="javascript:void(0);" onsubmit="updateVirus()">
             <input type="hidden" id="edit-id">
-            <input type="text" id="edit-name">
-            <input type="text" id="edit-genome">
-            <input type="text" id="edit-organism">
-            <input type="submit" value="Save">
+            <input type="text" class="form-group" id="edit-name">
+            <input type="text" class="form-group" id="edit-genome">
+            <input type="text" class="form-group" id="edit-organism">
+            <input type="submit" value="Save" class="btn btn-info">
         </form>
     </div>
 

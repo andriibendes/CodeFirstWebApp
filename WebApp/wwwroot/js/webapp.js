@@ -63,8 +63,8 @@ function updateGenome() {
     const genome = {
         id: parseInt(genomeId, 10),
         name: document.getElementById('edit-nameGen').value.trim(),
-        strand: parseInt(document.getElementById('edit-strand').value.trim()),
-        sense: parseInt(document.getElementById('edit-sense').value.trim())
+        strand: document.getElementById('edit-strand').value.trim(),
+        sense: document.getElementById('edit-sense').value.trim()
     };
 
     fetch(`${genomes}/${genomeId}`, {
@@ -133,33 +133,53 @@ function getViruses() {
 }
 
 function addVirus() {
-    const addNameTextbox = document.getElementById('add-name');
-    const addGenomeTextbox = document.getElementById('add-genome');
-    const addOrganismTextbox = document.getElementById('add-organism');
-
-    const virus = {
-        Name: addNameTextbox.value.trim(),
-        GenomeId: parseInt(addGenomeTextbox.value.trim()),
-        OrganismId: parseInt(addOrganismTextbox.value.trim()),
-    };
-
-
-    fetch(uri, {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(virus)
-    })
+    fetch(organisms)
         .then(response => response.json())
-        .then(() => {
-            getViruses();
-            addNameTextbox.value = '';
-            addGenomeTextbox.value = '';
-            addOrganismTextbox.value = '';
+        .then(data => {
+            for (let i = 0; i < data.length; i++) {
+                if (data[i].name === document.getElementById('add-organism').value.trim())
+                    return data[i].id;
+            }
         })
-        .catch(error => console.error('Unable to add virus.', error));
+        .then(organism => {
+            fetch(genomes)
+                .then(response => response.json())
+                .then(data => {
+                    for (let i = 0; i < data.length; i++) {
+                        if (data[i].name === document.getElementById('add-genome').value.trim())
+                            return data[i].id;
+                    }
+                })
+                .then(genome => {
+                    const addNameTextbox = document.getElementById('add-name');
+                    const addGenomeTextbox = document.getElementById('add-genome');
+                    const addOrganismTextbox = document.getElementById('add-organism');
+                    const virus = {
+                        name: document.getElementById('add-name').value.trim(),
+                        genomeId: genome,
+                        organismId: organism
+                    };
+
+                    fetch(uri, {
+                        method: 'POST',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(virus)
+                    })
+                        .then(response => response.json())
+                        .then(() => {
+                            getViruses();
+                            addNameTextbox.value = '';
+                            addGenomeTextbox.value = '';
+                            addOrganismTextbox.value = '';
+                        })
+                        .catch(error => console.error('Unable to add virus.', error));
+
+
+                })
+        })
 }
 
 function deleteVirus(id) {
@@ -180,26 +200,46 @@ function displayEditForm(id) {
 }
 
 function updateVirus() {
-    const virusId = document.getElementById('edit-id').value;
-    const virus = {
-        id: parseInt(virusId, 10),
-        name: document.getElementById('edit-name').value.trim(),
-        genomeId: parseInt(document.getElementById('edit-genome').value.trim()),
-        organismId: parseInt(document.getElementById('edit-organism').value.trim())
-    };
+    fetch(organisms)
+        .then(response => response.json())
+        .then(data => {
+            for (let i = 0; i < data.length; i++) {
+                if (data[i].name === document.getElementById('edit-organism').value.trim())
+                    return data[i].id;
+            }
+        })
+        .then(organism => {
+            fetch(genomes)
+                .then(response => response.json())
+                .then(data => {
+                    for (let i = 0; i < data.length; i++) {
+                        if (data[i].name === document.getElementById('edit-genome').value.trim())
+                            return data[i].id;
+                    }
+                })
+                .then(genome => {
+                    const virusId = document.getElementById('edit-id').value;
+                    const virus = {
+                        id: parseInt(virusId, 10),
+                        name: document.getElementById('edit-name').value.trim(),
+                        genomeId: genome,
+                        organismId: organism
+                    };
 
-    fetch(`${uri}/${virusId}`, {
-        method: 'PUT',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(virus)
-    })
-        .then(() => getViruses())
-        .catch(error => console.error('Unable to update virus.', error));
+                    fetch(`${uri}/${virusId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(virus)
+                    })
+                        .then(() => getViruses())
+                        .catch(error => console.error('Unable to update virus.', error));
 
-    return false;
+                    return false;
+                })
+        })
 }
 
 
@@ -230,10 +270,12 @@ function _displayViruses(data) {
                     .then(genome => {
                         let editButton = button.cloneNode(false);
                         editButton.innerText = 'Edit';
+                        editButton.classList.add("btn-warning");
                         editButton.setAttribute('onclick', `displayEditForm(${virus.id})`);
 
                         let deleteButton = button.cloneNode(false);
                         deleteButton.innerText = 'Delete';
+                        deleteButton.classList.add("btn-danger");
                         deleteButton.setAttribute('onclick', `deleteVirus(${virus.id})`);
 
                         let tr = tBody.insertRow();
