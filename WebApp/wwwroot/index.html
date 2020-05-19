@@ -24,23 +24,34 @@
     <h1>Viruses</h1>
     <h3>Add Virus</h3>
     <form action="javascript:void(0);" method="POST" onsubmit="addVirus()">
-        <input type="text" id="add-name" class="form-group" placeholder="New Virus">
-        <input type="text" id="add-genome" class="form-group" placeholder="New Genome">
-        <input type="text" id="add-organism" class="form-group" placeholder="New Organism">
+        <input type="text" id="add-name" class="form-control" placeholder="New Virus">
+        <input type="text" id="add-genome" class="form-control" placeholder="New Genome">
+        <input type="text" id="add-organism" class="form-control" placeholder="New Organism">
         <input type="submit" value="Add" class="btn btn-success">
     </form>
+
+    <div>
+        <label class="invalid-feedback" id="add-vn"></label>
+        <label class="invalid-feedback" id="add-vg"></label>
+        <label class="invalid-feedback" id="add-vo"></label>
+    </div>
 
     <div id="editVirus">
         <h3>Edit</h3>
         <form action="javascript:void(0);" onsubmit="updateVirus()">
             <input type="hidden" id="edit-id">
-            <input type="text" class="form-group" id="edit-name">
-            <input type="text" class="form-group" id="edit-genome">
-            <input type="text" class="form-group" id="edit-organism">
+            <input type="text" class="form-control" id="edit-name">
+            <input type="text" class="form-control" id="edit-genome">
+            <input type="text" class="form-control" id="edit-organism">
             <input type="submit" value="Save" class="btn btn-info">
         </form>
     </div>
 
+    <div>
+        <label class="invalid-feedback" id="ed-vn"></label>
+        <label class="invalid-feedback" id="ed-vg"></label>
+        <label class="invalid-feedback" id="ed-vo"></label>
+    </div>
     <p id="counter"></p>
 
     <table>

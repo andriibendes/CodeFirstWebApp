@@ -31,3 +31,12 @@ nav {
 th {
     width: 130px;
 }
+
+.form-control {
+    display:inline;
+    width:300px;
+}
+
+.invalid-feedback {
+    display: block;
+}

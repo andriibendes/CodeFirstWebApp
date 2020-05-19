@@ -15,38 +15,74 @@ function addGenome() {
     const addNameTextbox = document.getElementById('add-nameGen');
     const addStrandTextbox = document.getElementById('add-strand');
     const addSenseTextbox = document.getElementById('add-sense');
-
+    document.getElementById('add-gn').innerHTML = "";
+    document.getElementById('add-gs').innerHTML = "";
+    document.getElementById('add-gss').innerHTML = "";
     const genome = {
         Name: addNameTextbox.value.trim(),
         Strand: addStrandTextbox.value.trim(),
         Sense: addSenseTextbox.value.trim(),
     };
 
+    let regex = /[A-Z][a-z]+/;
+    if (!regex.test(genome.Name) || !regex.test(genome.Strand) || !regex.test(genome.Sense)) {
+        if (!regex.test(genome.Name)) {
+            document.getElementById('add-gn').innerHTML = "Name is not correct!";
+        }
+        if (!regex.test(genome.Strand)) {
+            document.getElementById('add-gs').innerHTML = "Strand is not correct!";
+        }
+        if (!regex.test(genome.Sense)) {
+            document.getElementById('add-gss').innerHTML = "Sense is not correct!";
+        }
+    }
+    else {
+        document.getElementById('add-gn').innerHTML = "";
+        document.getElementById('add-gs').innerHTML = "";
+        document.getElementById('add-gss').innerHTML = "";
 
-    fetch(genomes, {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(genome)
-    })
-        .then(response => response.json())
-        .then(() => {
-            getGenomes();
-            addNameTextbox.value = '';
-            addStrandTextbox.value = '';
-            addSenseTextbox.value = '';
+        fetch(genomes, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(genome)
         })
-        .catch(error => console.error('Unable to add genome.', error));
+            .then(response => response.json())
+            .then(() => {
+                getGenomes();
+                addNameTextbox.value = '';
+                addStrandTextbox.value = '';
+                addSenseTextbox.value = '';
+            })
+            .catch(error => console.error('Unable to add genome.', error));
+    }
 }
 
 function deleteGenome(id) {
-    fetch(`${genomes}/${id}`, {
-        method: 'DELETE'
-    })
-        .then(() => getViruses())
-        .catch(error => console.error('Unable to delete genome.', error));
+    document.getElementById('ed-gn').innerHTML = "";
+    fetch(uri)
+        .then(response => response.json())
+        .then(data => {
+            for (let i = 0; i < data.length; i++) {
+                if (data[i].genomeId === id)
+                    return data[i].id;
+            }
+        })
+        .then(data => {
+            if (data === undefined) {
+                fetch(`${genomes}/${id}`, {
+                    method: 'DELETE'
+                })
+                    .then(() => getGenomes())
+                    .catch(error => console.error('Unable to delete genome.', error));
+            }
+            else {
+                document.getElementById('ed-gn').innerHTML = "There are viruses with this genome!";
+            }
+        })
+
 }
 
 function displayEditFormGen(id) {
@@ -61,24 +97,44 @@ function displayEditFormGen(id) {
 function updateGenome() {
     const genomeId = document.getElementById('edit-idGen').value;
     const genome = {
-        id: parseInt(genomeId, 10),
-        name: document.getElementById('edit-nameGen').value.trim(),
-        strand: document.getElementById('edit-strand').value.trim(),
-        sense: document.getElementById('edit-sense').value.trim()
+        Id: parseInt(genomeId, 10),
+        Name: document.getElementById('edit-nameGen').value.trim(),
+        Strand: document.getElementById('edit-strand').value.trim(),
+        Sense: document.getElementById('edit-sense').value.trim()
     };
+    document.getElementById('ed-gn').innerHTML = "";
+    document.getElementById('ed-gs').innerHTML = "";
+    document.getElementById('ed-gss').innerHTML = "";
+    let regex = /[A-Z][a-z]+/;
 
-    fetch(`${genomes}/${genomeId}`, {
-        method: 'PUT',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(genome)
-    })
-        .then(() => getGenomes())
-        .catch(error => console.error('Unable to update genome.', error));
+    if (!regex.test(genome.Name) || !regex.test(genome.Strand) || !regex.test(genome.Sense)) {
+        if (!regex.test(genome.Name)) {
+            document.getElementById('ed-gn').innerHTML = "Name is not correct!";
+        }
+        if (!regex.test(genome.Strand)) {
+            document.getElementById('ed-gs').innerHTML = "Strand is not correct!";
+        }
+        if (!regex.test(genome.Sense)) {
+            document.getElementById('ed-gss').innerHTML = "Sense is not correct!";
+        }
+    }
+    else {
+        document.getElementById('ed-gn').innerHTML = "";
+        document.getElementById('ed-gs').innerHTML = "";
+        document.getElementById('ed-gss').innerHTML = "";
+        fetch(`${genomes}/${genomeId}`, {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(genome)
+        })
+            .then(() => getGenomes())
+            .catch(error => console.error('Unable to update genome.', error));
 
-    return false;
+        return false;
+    }
 }
 
 
@@ -92,10 +148,14 @@ function _displayGenomes(data) {
 
         let editButton = button.cloneNode(false);
         editButton.innerText = 'Edit';
+        editButton.classList.add("btn-warning");
+        editButton.classList.add("btn");
         editButton.setAttribute('onclick', `displayEditFormGen(${genome.id})`);
 
         let deleteButton = button.cloneNode(false);
         deleteButton.innerText = 'Delete';
+        deleteButton.classList.add("btn-danger");
+        deleteButton.classList.add("btn");
         deleteButton.setAttribute('onclick', `deleteGenome(${genome.id})`);
 
         let tr = tBody.insertRow();
@@ -151,33 +211,51 @@ function addVirus() {
                     }
                 })
                 .then(genome => {
+                    console.log(genome);
                     const addNameTextbox = document.getElementById('add-name');
                     const addGenomeTextbox = document.getElementById('add-genome');
                     const addOrganismTextbox = document.getElementById('add-organism');
+                    document.getElementById('add-vn').innerHTML = "";
+                    document.getElementById('add-vg').innerHTML = "";
+                    document.getElementById('add-vo').innerHTML = "";
                     const virus = {
                         name: document.getElementById('add-name').value.trim(),
                         genomeId: genome,
                         organismId: organism
                     };
+                    let regex = /[A-Z][a-z]+/;
+                    if (genome == undefined || organism == undefined || !regex.test(virus.name)) {
+                        if (!regex.test(virus.name)) {
+                            document.getElementById('add-vn').innerHTML = "Name is not correct!";
+                        }
+                        if (genome == undefined) {
+                            document.getElementById('add-vg').innerHTML = "Genome is not correct!";
+                        }
+                        if (organism == undefined) {
+                            document.getElementById('add-vo').innerHTML = "Organism is not correct!";
+                        }
+                    }
+                    else {
+                        document.getElementById('add-vn').innerHTML = "";
+                        document.getElementById('add-vg').innerHTML = "";
+                        document.getElementById('add-vo').innerHTML = "";
 
-                    fetch(uri, {
-                        method: 'POST',
-                        headers: {
-                            'Accept': 'application/json',
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(virus)
-                    })
-                        .then(response => response.json())
-                        .then(() => {
-                            getViruses();
-                            addNameTextbox.value = '';
-                            addGenomeTextbox.value = '';
-                            addOrganismTextbox.value = '';
+                        fetch(uri, {
+                            method: 'POST',
+                            headers: {
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(virus)
                         })
-                        .catch(error => console.error('Unable to add virus.', error));
-
-
+                            .then(response => response.json())
+                            .then(() => {
+                                getViruses();
+                                addNameTextbox.value = '';
+                                addGenomeTextbox.value = '';
+                                addOrganismTextbox.value = '';
+                            })
+                    }
                 })
         })
 }
@@ -200,6 +278,9 @@ function displayEditForm(id) {
 }
 
 function updateVirus() {
+    document.getElementById('ed-vn').innerHTML = "";
+    document.getElementById('ed-vg').innerHTML = "";
+    document.getElementById('ed-vo').innerHTML = "";
     fetch(organisms)
         .then(response => response.json())
         .then(data => {
@@ -225,19 +306,35 @@ function updateVirus() {
                         genomeId: genome,
                         organismId: organism
                     };
+                    let regex = /[A-Z][a-z]+/;
+                    if (genome == undefined || organism == undefined || !regex.test(virus.name)) {
+                        if (!regex.test(virus.name)) {
+                            document.getElementById('ed-vn').innerHTML = "Name is not correct!";
+                        }
+                        if (genome == undefined) {
+                            document.getElementById('ed-vg').innerHTML = "Genome is not correct!";
+                        }
+                        if (organism == undefined) {
+                            document.getElementById('ed-vo').innerHTML = "Organism is not correct!";
+                        }
+                    }
+                    else {
+                        document.getElementById('ed-vn').innerHTML = "";
+                        document.getElementById('ed-vg').innerHTML = "";
+                        document.getElementById('ed-vo').innerHTML = "";
+                        fetch(`${uri}/${virusId}`, {
+                            method: 'PUT',
+                            headers: {
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(virus)
+                        })
+                            .then(() => getViruses())
+                            .catch(error => console.error('Unable to update virus.', error));
 
-                    fetch(`${uri}/${virusId}`, {
-                        method: 'PUT',
-                        headers: {
-                            'Accept': 'application/json',
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(virus)
-                    })
-                        .then(() => getViruses())
-                        .catch(error => console.error('Unable to update virus.', error));
-
-                    return false;
+                        return false;
+                    }
                 })
         })
 }
@@ -271,11 +368,13 @@ function _displayViruses(data) {
                         let editButton = button.cloneNode(false);
                         editButton.innerText = 'Edit';
                         editButton.classList.add("btn-warning");
+                        editButton.classList.add("btn");
                         editButton.setAttribute('onclick', `displayEditForm(${virus.id})`);
 
                         let deleteButton = button.cloneNode(false);
                         deleteButton.innerText = 'Delete';
                         deleteButton.classList.add("btn-danger");
+                        deleteButton.classList.add("btn");
                         deleteButton.setAttribute('onclick', `deleteVirus(${virus.id})`);
 
                         let tr = tBody.insertRow();
