@@ -38,6 +38,7 @@ namespace WebApp.Models
             return new ValidationResult(GetErrorMessage());
         }
     }
+
     public class Scientist
     {
         public Scientist()

@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Genomes</title>
+    <title>Scientists</title>
     <link rel="stylesheet" href="css/bootstrap.css" />
 </head>
 <body>
@@ -24,50 +24,46 @@
 
         </div>
     </nav>
-    <h1>Genomes</h1>
-    <h3>Add Genome</h3>
-    <form action="javascript:void(0);" method="POST" onsubmit="addGenome()">
-        <input type="text" id="add-nameGen" class="form-control" placeholder="New Genome">
-        <input type="text" id="add-strand" class="form-control" placeholder="New Strand">
-        <input type="text" id="add-sense" class="form-control" placeholder="New Sense">
+    <h1>Scientists</h1>
+    <h3>Add Scientist</h3>
+    <form action="javascript:void(0);" method="POST" onsubmit="addScientist()">
+        <input type="text" id="add-na" class="form-control" placeholder="New Scientist">
+        <input type="text" id="add-co" class="form-control" placeholder="New Country">
         <input type="submit" value="Add" class="btn btn-success">
     </form>
 
     <div>
-        <label class="invalid-feedback" id="add-gn"></label>
-        <label class="invalid-feedback" id="add-gs"></label>
-        <label class="invalid-feedback" id="add-gss"></label>
+        <label class="invalid-feedback" id="add-ns"></label>
+        <label class="invalid-feedback" id="add-cs"></label>
     </div>
 
-    <div id="editGenome">
+    <div id="editScientist">
         <h3>Edit</h3>
-        <form action="javascript:void(0);" onsubmit="updateGenome()">
-            <input type="hidden" id="edit-idGen">
-            <input type="text" class="form-control" id="edit-nameGen">
-            <input type="text" class="form-control" id="edit-strand">
-            <input type="text" class="form-control" id="edit-sense">
+        <form action="javascript:void(0);" onsubmit="updateScientist()">
+            <input type="hidden" id="edit-id">
+            <input type="text" class="form-control" id="edit-na">
+            <input type="text" class="form-control" id="edit-co">
             <input type="submit" value="Save" class="btn btn-info">
         </form>
     </div>
+
     <div>
-        <label class="invalid-feedback" id="ed-gn"></label>
-        <label class="invalid-feedback" id="ed-gs"></label>
-        <label class="invalid-feedback" id="ed-gss"></label>
+        <label class="invalid-feedback" id="ed-ns"></label>
+        <label class="invalid-feedback" id="ed-cs"></label>
     </div>
     <p id="counter"></p>
 
     <table>
         <tr>
             <th>Name</th>
-            <th>Strand</th>
-            <th>Sense</th>
+            <th>Country</th>
         </tr>
-        <tbody id="genomes"></tbody>
+        <tbody id="scientists"></tbody>
     </table>
 
-    <script src="js/webapp.js" asp-append-version="true"></script>
+    <script src="js/scientists.js" asp-append-version="true"></script>
     <script type="text/javascript">
-        getGenomes();
+        getScientists();
     </script>
 </body>
 </html>

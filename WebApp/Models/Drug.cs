@@ -8,6 +8,13 @@ using System.Threading.Tasks;
 
 namespace WebApp.Models
 {
+    public interface IRepository
+    {
+        IEnumerable<Drug> GetAll();
+        Drug Get(int id);
+        void Create(Drug drug);
+    }
+
     public class Drug
     {
         public Drug()

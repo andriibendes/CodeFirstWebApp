@@ -41,22 +41,40 @@ function addGenome() {
         document.getElementById('add-gs').innerHTML = "";
         document.getElementById('add-gss').innerHTML = "";
 
-        fetch(genomes, {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(genome)
-        })
+        fetch(genomes)
             .then(response => response.json())
-            .then(() => {
-                getGenomes();
-                addNameTextbox.value = '';
-                addStrandTextbox.value = '';
-                addSenseTextbox.value = '';
+            .then(data => {
+                for (let i = 0; i < data.length; i++) {
+                    if (data[i].name == genome.Name) {
+                        return true;
+                    }
+                }
+                return false;
             })
-            .catch(error => console.error('Unable to add genome.', error));
+            .then(boole => {
+                if (boole) {
+                    document.getElementById('add-gn').innerHTML = "Name is taken!";
+                }
+                else {
+                    fetch(genomes, {
+                        method: 'POST',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(genome)
+                    })
+                        .then(response => response.json())
+                        .then(() => {
+                            getGenomes();
+                            addNameTextbox.value = '';
+                            addStrandTextbox.value = '';
+                            addSenseTextbox.value = '';
+                        })
+                        .catch(error => console.error('Unable to add genome.', error));
+                }
+            })
+    
     }
 }
 
@@ -119,21 +137,38 @@ function updateGenome() {
         }
     }
     else {
-        document.getElementById('ed-gn').innerHTML = "";
-        document.getElementById('ed-gs').innerHTML = "";
-        document.getElementById('ed-gss').innerHTML = "";
-        fetch(`${genomes}/${genomeId}`, {
-            method: 'PUT',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(genome)
-        })
-            .then(() => getGenomes())
-            .catch(error => console.error('Unable to update genome.', error));
+        fetch(genomes)
+            .then(response => response.json())
+            .then(data => {
+                for (let i = 0; i < data.length; i++) {
+                    if (data[i].name == genome.Name) {
+                        return true;
+                    }
+                }
+                return false;
+            })
+            .then(boole => {
+                if (boole) {
+                    document.getElementById('ed-gn').innerHTML = "Name is taken!";
+                }
+                else {
+                    document.getElementById('ed-gn').innerHTML = "";
+                    document.getElementById('ed-gs').innerHTML = "";
+                    document.getElementById('ed-gss').innerHTML = "";
+                    fetch(`${genomes}/${genomeId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(genome)
+                    })
+                        .then(() => getGenomes())
+                        .catch(error => console.error('Unable to update genome.', error));
 
-        return false;
+                    return false;
+                }
+            })
     }
 }
 
@@ -236,24 +271,41 @@ function addVirus() {
                         }
                     }
                     else {
-                        document.getElementById('add-vn').innerHTML = "";
-                        document.getElementById('add-vg').innerHTML = "";
-                        document.getElementById('add-vo').innerHTML = "";
-
-                        fetch(uri, {
-                            method: 'POST',
-                            headers: {
-                                'Accept': 'application/json',
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify(virus)
-                        })
+                        fetch(uri)
                             .then(response => response.json())
-                            .then(() => {
-                                getViruses();
-                                addNameTextbox.value = '';
-                                addGenomeTextbox.value = '';
-                                addOrganismTextbox.value = '';
+                            .then(data => {
+                                for (let i = 0; i < data.length; i++) {
+                                    if (data[i].name == virus.name) {
+                                        return true;
+                                    }
+                                }
+                                return false;
+                            })
+                            .then(boole => {
+                                if (boole) {
+                                    document.getElementById('add-vn').innerHTML = "Name is taken!";
+                                }
+                                else {
+                                    document.getElementById('add-vn').innerHTML = "";
+                                    document.getElementById('add-vg').innerHTML = "";
+                                    document.getElementById('add-vo').innerHTML = "";
+
+                                    fetch(uri, {
+                                        method: 'POST',
+                                        headers: {
+                                            'Accept': 'application/json',
+                                            'Content-Type': 'application/json'
+                                        },
+                                        body: JSON.stringify(virus)
+                                    })
+                                        .then(response => response.json())
+                                        .then(() => {
+                                            getViruses();
+                                            addNameTextbox.value = '';
+                                            addGenomeTextbox.value = '';
+                                            addOrganismTextbox.value = '';
+                                        })
+                                }
                             })
                     }
                 })
@@ -319,21 +371,38 @@ function updateVirus() {
                         }
                     }
                     else {
-                        document.getElementById('ed-vn').innerHTML = "";
-                        document.getElementById('ed-vg').innerHTML = "";
-                        document.getElementById('ed-vo').innerHTML = "";
-                        fetch(`${uri}/${virusId}`, {
-                            method: 'PUT',
-                            headers: {
-                                'Accept': 'application/json',
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify(virus)
-                        })
-                            .then(() => getViruses())
-                            .catch(error => console.error('Unable to update virus.', error));
+                        fetch(uri)
+                            .then(response => response.json())
+                            .then(data => {
+                                for (let i = 0; i < data.length; i++) {
+                                    if (data[i].name == virus.name) {
+                                        return true;
+                                    }
+                                }
+                                return false;
+                            })
+                            .then(boole => {
+                                if (boole) {
+                                    document.getElementById('ed-vn').innerHTML = "Name is taken!";
+                                }
+                                else {
+                                    document.getElementById('ed-vn').innerHTML = "";
+                                    document.getElementById('ed-vg').innerHTML = "";
+                                    document.getElementById('ed-vo').innerHTML = "";
+                                    fetch(`${uri}/${virusId}`, {
+                                        method: 'PUT',
+                                        headers: {
+                                            'Accept': 'application/json',
+                                            'Content-Type': 'application/json'
+                                        },
+                                        body: JSON.stringify(virus)
+                                    })
+                                        .then(() => getViruses())
+                                        .catch(error => console.error('Unable to update virus.', error));
 
-                        return false;
+                                    return false;
+                                }
+                            })
                     }
                 })
         })

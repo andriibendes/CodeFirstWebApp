@@ -14,7 +14,6 @@ namespace WebApp.Controllers
     public class ScientistController : Controller
     {
         private readonly VirusContext _context;
-
         public ScientistController(VirusContext context)
         {
             _context = context;

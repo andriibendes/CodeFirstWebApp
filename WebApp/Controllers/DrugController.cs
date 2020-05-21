@@ -13,21 +13,60 @@ namespace WebApp.Controllers
     [ApiController]
     public class DrugController : Controller
     {
-        private readonly VirusContext _context;
+        //private readonly VirusContext _context;
+        IRepository repository;
 
-        public DrugController(VirusContext context)
+        public DrugController(IRepository r)
         {
-            _context = context;
+            repository = r;
+        }
+        [HttpGet]
+        public IActionResult Index()
+        {
+            return View(repository.GetAll());
         }
 
-        // GET: api/Drugs
+        [HttpPost]
+        public IActionResult AddDrug(Drug drug)
+        {
+            if (ModelState.IsValid)
+            {
+                repository.Create(drug);
+                return RedirectToAction("Index");
+            }
+            return View(drug);
+        }
+
+        /*// GET: api/Drugs
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Drug>>> GetDrug()
         {
             return await _context.Drug.ToListAsync();
+        }*/
+        [HttpGet]
+        public IActionResult GetDrug(int? id)
+        {
+            if (!id.HasValue)
+                return BadRequest();
+            Drug drug = repository.Get(id.Value);
+            if (drug == null)
+                return NotFound();
+            return View(drug);
         }
 
-        // GET: api/Drugs/5
+        public IActionResult AddUser() => View();
+
+        [HttpPost]
+        public IActionResult AddGrug(Drug drug)
+        {
+            if (ModelState.IsValid)
+            {
+                repository.Create(drug);
+                return RedirectToAction("Index");
+            }
+            return View(drug);
+        }
+        /*// GET: api/Drugs/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Drug>> GetDrug(int id)
         {
@@ -39,12 +78,12 @@ namespace WebApp.Controllers
             }
 
             return drug;
-        }
+        }*/
 
         // PUT: api/Drugs/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
-        [HttpPut("{id}")]
+        /*[HttpPut("{id}")]
         public async Task<IActionResult> PutDrug(int id, Drug drug)
         {
             if (id != drug.Id)
@@ -71,20 +110,20 @@ namespace WebApp.Controllers
             }
 
             return NoContent();
-        }
+        }*/
 
         // POST: api/Drugs
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
-        [HttpPost]
+        /* [HttpPost]
         public async Task<ActionResult<Drug>> PostDrug(Drug drug)
         {
             _context.Drug.Add(drug);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetDrug", new { id = drug.Id }, drug);
-        }
-
+        }*/
+        /*
         // DELETE: api/Drugs/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<Drug>> DeleteDrug(int id)
@@ -104,6 +143,6 @@ namespace WebApp.Controllers
         private bool DrugExists(int id)
         {
             return _context.Drug.Any(e => e.Id == id);
-        }
+        }*/
     }
 }
