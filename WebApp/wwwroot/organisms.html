@@ -2,8 +2,8 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Viruses</title>
-    <link rel="stylesheet" href="css/bootstrap.css"/>
+    <title>Organisms</title>
+    <link rel="stylesheet" href="css/bootstrap.css" />
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
@@ -30,51 +30,41 @@
 
         </div>
     </nav>
-    <h1>Viruses</h1>
-    <h3>Add Virus</h3>
-    <form action="javascript:void(0);" method="POST" onsubmit="addVirus()">
-        <input type="text" id="add-name" class="form-control" placeholder="New Virus">
-        <input type="text" id="add-genome" class="form-control" placeholder="New Genome">
-        <input type="text" id="add-organism" class="form-control" placeholder="New Organism">
+    <h1>Organisms</h1>
+    <h3>Add Organism</h3>
+    <form action="javascript:void(0);" method="POST" onsubmit="addOrganism()">
+        <input type="text" id="add-nameOrg" class="form-control" placeholder="New Genome">
         <input type="submit" value="Add" class="btn btn-success">
     </form>
 
     <div>
-        <label class="invalid-feedback" id="add-vn"></label>
-        <label class="invalid-feedback" id="add-vg"></label>
-        <label class="invalid-feedback" id="add-vo"></label>
+        <label class="invalid-feedback" id="add-on"></label>
     </div>
 
-    <div id="editVirus">
+    <div id="editOrganism">
         <h3>Edit</h3>
-        <form action="javascript:void(0);" onsubmit="updateVirus()">
-            <input type="hidden" id="edit-id">
-            <input type="text" class="form-control" id="edit-name">
-            <input type="text" class="form-control" id="edit-genome">
-            <input type="text" class="form-control" id="edit-organism">
+        <form action="javascript:void(0);" onsubmit="updateOrganism()">
+            <input type="hidden" id="edit-oi">
+            <input type="text" class="form-control" id="edit-on">
             <input type="submit" value="Save" class="btn btn-info">
         </form>
     </div>
-
     <div>
-        <label class="invalid-feedback" id="ed-vn"></label>
-        <label class="invalid-feedback" id="ed-vg"></label>
-        <label class="invalid-feedback" id="ed-vo"></label>
+        <label class="invalid-feedback" id="ed-onv"></label>
+
     </div>
     <p id="counter"></p>
 
     <table>
         <tr>
             <th>Name</th>
-            <th>Genome</th>
-            <th>Organism</th>
         </tr>
-        <tbody id="viruses"></tbody>
+        <tbody id="organisms"></tbody>
     </table>
 
-    <script src="js/webapp.js" asp-append-version="true"></script>
+    <script src="js/organisms.js" asp-append-version="true"></script>
     <script type="text/javascript">
-        getViruses();
+        getOrganisms();
     </script>
 </body>
 </html>
